@@ -4,6 +4,7 @@ import express, { Router } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { env } from './config/env.js';
+import { runMigrations } from './db/migrate.js';
 import { pool } from './db/pool.js';
 import { requireAuth } from './middleware/auth.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
@@ -13,6 +14,8 @@ import { categoriesRouter } from './modules/categories/categories.routes.js';
 import { dashboardRouter } from './modules/dashboard/dashboard.routes.js';
 import { expensesRouter } from './modules/expenses/expenses.routes.js';
 import { reportsRouter } from './modules/reports/reports.routes.js';
+
+let migrationPromise: Promise<void> | null = null;
 
 export function createApp() {
   const app = express();
@@ -29,6 +32,24 @@ export function createApp() {
   app.use(express.json({ limit: '100kb' }));
   app.use(cookieParser());
   if (!env.isTest) app.use(morgan(env.isProduction ? 'combined' : 'dev'));
+
+  // Ensure database migrations have run before handling requests
+  app.use(async (_req, res, next) => {
+    if (env.isTest) return next();
+    if (!migrationPromise) {
+      migrationPromise = runMigrations(() => undefined).catch((error) => {
+        migrationPromise = null;
+        throw error;
+      });
+    }
+    try {
+      await migrationPromise;
+      next();
+    } catch (error) {
+      console.error('Database migration failed:', error);
+      res.status(500).json({ error: { code: 'INTERNAL_ERROR', message: 'Database initialization failed' } });
+    }
+  });
 
   app.get('/api/health', async (_req, res) => {
     await pool.query('SELECT 1');
@@ -52,3 +73,7 @@ export function createApp() {
 
   return app;
 }
+
+const defaultApp = createApp();
+export default defaultApp;
+
