@@ -12,16 +12,39 @@ A full-stack financial management platform designed to track expenses, set month
 
 ## Core Features & Assessment Requirements
 
-| Module | Features & Capabilities |
-| --- | --- |
-| **Authentication** | Secure JWT-based authentication with 15-minute access tokens and 7-day rotating refresh tokens stored in `httpOnly`, `SameSite` cookies. Full session persistence across page reloads, logout session revocation, and reuse-detection protection. |
-| **Demo Sandbox** | *Explore with demo data* feature grants instant access to an isolated personal sandbox account seeded with 6 months of historical transactions and budget allocations. (Automatically purged after 24 hours). |
-| **Financial Dashboard** | Real-time overview of monthly total expenditures, allocated budgets, remaining allowance, over-limit alerts, and month-over-month percent variance. Includes category distribution donut charts, 6-month historical trend bar charts, and recent transaction feeds. |
-| **Expense Management** | Full CRUD operations (create, view, update, delete). Comprehensive multi-criteria filtering by **date range**, **category**, and **minimum/maximum amount**, plus description search and sorting (by date or amount) with server-side pagination. |
-| **Budget Control** | Set, edit, and delete **monthly limits per category**. Dynamic visual progress bars trigger warning states at 80% usage and alert states when over limit. Includes one-click budget cloning from the previous month. |
-| **Category System** | Seeded with standard default financial categories (Food & Dining, Transport, Shopping, Bills & Utilities, Entertainment, Health, Education, Other) with customizable names and color palettes. Referential integrity prevents accidental deletion of categories linked to active expenses. |
-| **Reporting & Export** | Generate monthly and annual expenditure summaries. Export data directly to **CSV** or multi-sheet **Excel (.xlsx)** workbooks containing Summary, Category Breakdown, Daily Breakdown, and Transaction Details. |
-| **Responsive UI** | Mobile and desktop optimized interface. Desktop includes an executive dark-slate navigation sidebar; mobile adapts with a top bar, bottom tab navigation bar, card-based transaction layouts, and drawer dialogs. |
+- **Authentication**
+  - User registration and login with secure password hashing (bcrypt).
+  - JWT-based authentication with automatic access token refresh.
+  - Persistent sessions across page reloads and secure logout.
+
+- **Financial Overview (Dashboard)**
+  - At-a-glance financial summary cards: Total Spent, Monthly Budget, Remaining Budget, and Total Transactions.
+  - Quick-action shortcut cards for fast navigation.
+  - Visual breakdowns including category distribution donut charts and 6-month spending trend charts.
+  - Recent transactions list with status indicators.
+
+- **Expense Manager**
+  - Full expense management: add, view, edit, and delete expenses.
+  - Multi-criteria filtering by date range, category, and minimum/maximum amount.
+  - Search by description and sorting by date or amount with pagination.
+
+- **Budget Planner**
+  - Set, edit, and delete monthly budget limits for each spending group.
+  - Real-time progress bars with warning alerts when reaching 80% and over-limit indicators.
+  - One-click copy option to clone budgets from the previous month.
+
+- **Spending Groups (Categories)**
+  - Pre-seeded default categories (Food, Transport, Bills, Shopping, Entertainment, etc.).
+  - Create and customize custom categories with custom color tags.
+  - Protected categories preventing deletion if linked to existing transactions.
+
+- **Analytics & Report Exports**
+  - Monthly and yearly spending summaries with visual charts.
+  - One-click report downloads in **CSV** or multi-sheet **Excel (.xlsx)** formats.
+
+- **Responsive & Modern UI**
+  - Fully responsive layout for desktop, tablet, and mobile devices.
+  - Sleek modern design with dark slate theme, emerald accents, and interactive micro-animations.
 
 ---
 
